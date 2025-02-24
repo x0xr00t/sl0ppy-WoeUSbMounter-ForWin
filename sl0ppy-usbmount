@@ -1,7 +1,9 @@
 #!/bin/bash
+# author : patrick hoogeveen
+# aka    : x0xr00t
 
 # Variables (edit these as needed)
-ISO_PATH="/home/x0/Downloads/Win11_24H2_Dutch_x64.iso"     # Path to the Windows ISO file
+ISO_PATH="/Win11_24H2_Dutch_x64.iso"     # Path to the Windows ISO file
 USB_DEVICE="/dev/sdb"               # USB device (e.g., /dev/sdb)
 
 # Check if running as root

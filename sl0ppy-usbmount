@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# Variables (edit these as needed)
+ISO_PATH="/home/x0/Downloads/Win11_24H2_Dutch_x64.iso"     # Path to the Windows ISO file
+USB_DEVICE="/dev/sdb"               # USB device (e.g., /dev/sdb)
+
+# Check if running as root
+if [[ $EUID -ne 0 ]]; then
+    echo "Please run this script as root."
+    exit 1
+fi
+
+# Confirm the ISO and USB device
+echo "Windows ISO: $ISO_PATH"
+echo "USB Device: $USB_DEVICE"
+read -p "Are you sure you want to proceed? This will erase all data on the USB device. (y/N): " CONFIRM
+if [[ "$CONFIRM" != "y" && "$CONFIRM" != "Y" ]]; then
+    echo "Aborting."
+    exit 1
+fi
+
+# Unmount the USB device if mounted
+umount ${USB_DEVICE}* || echo "No mounted partitions to unmount."
+
+# Create the bootable USB using WoeUSB
+woeusb --target-filesystem NTFS --device "$ISO_PATH" "$USB_DEVICE"
+
+# Check if WoeUSB was successful
+if [[ $? -eq 0 ]]; then
+    echo "Bootable Windows USB created successfully!"
+else
+    echo "Failed to create bootable USB."
+fi
